@@ -17,7 +17,7 @@ var TweetProvider= new TweetProvider();
   });
 
 
-  app.get('/tweet/', function(req, res){
+  app.get('/users/', function(req, res){
   TweetProvider.findAll(function(error, tweets){
     res.write(JSON.stringify(tweets));
     res.end();
@@ -26,7 +26,7 @@ var TweetProvider= new TweetProvider();
 
 
   
-  app.post('/tweet/new', function(req, res){
+  app.post('/users/tweet/', function(req, res){
   TweetProvider.composeNew({
     tHandle   : req.body.tHandle,
     body      : req.body.body,
