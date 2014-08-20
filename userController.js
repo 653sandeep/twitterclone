@@ -31,6 +31,6 @@ var userConstructor = new userConstructor();
     tHandle           : req.body.tHandle,
     password          : req.body.password,
   }, function(error, docs) {
-  res.redirect('/authenticate/');
+  res.redirect('/users/');
   });
 });
