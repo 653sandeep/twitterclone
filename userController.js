@@ -8,8 +8,8 @@ var url=require('url');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-var TweetProvider = require('./testTweet').TweetProvider;
-var TweetProvider= new TweetProvider();
+var userConstructor = require('./userModel').userConstructor;
+var userConstructor = new userConstructor();
 
 
   var server = app.listen(3001, function() {
@@ -18,19 +18,19 @@ var TweetProvider= new TweetProvider();
 
 
   app.get('/users/', function(req, res){
-  TweetProvider.findAll(function(error, tweets){
-    res.write(JSON.stringify(tweets));
+  userConstructor.findAll(function(error, Users){
+    res.write(JSON.stringify(Users));
     res.end();
     });
   })
 
-
+  })
   
-  app.post('/users/tweet/', function(req, res){
-  TweetProvider.composeNew({
-    tHandle   : req.body.tHandle,
-    body      : req.body.body,
+  app.post('/users/new/', function(req, res){
+  userConstructor.New({
+    tHandle           : req.body.tHandle,
+    password          : req.body.password,
   }, function(error, docs) {
-  res.redirect('/tweet/');
+  res.redirect('/authenticate/');
   });
 });

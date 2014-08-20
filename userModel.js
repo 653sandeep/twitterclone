@@ -1,15 +1,42 @@
 var mongoose = require('mongoose')
   , Schema = mongoose.Schema
-mongoose.connect('mongodb://localhost/testTweetDB');
+mongoose.connect('mongodb://localhost/userDB');
   var mongoose = require('mongoose')
     , Schema = mongoose.Schema
 
-
-
 var userSchema = Schema({
-    userid    : Number,
-    startDate : Date,
-    tweets    : [{ type : String, ref: 'wallSchema'}],
-    following : { type : Number },
-    followers : { type : Number }
-  })
+    tHandle    	: String,
+    password  	: String,
+    //startDate : Date,
+    // tweets    : [{ type : String, ref: 'wallSchema'}],
+    // following : { type : Number },
+    // followers : { type : Number }
+  });
+
+var user = mongoose.model('user', userSchema);
+userConstructor = function() {}; 
+
+userConstructor.prototype.findAll = function(callback){
+	user.find({}, function (err, Users) {
+        callback( null, Users )
+      });  
+  };
+
+
+  userConstructor.prototype.New = function(params, callback){
+var newUser = new user(
+  { 
+    tHandle 		: params.tHandle,
+    password    	: params.password,
+  });
+  newUser.save(function (err) {
+  callback();
+});
+//var newWall = new Wall(
+  //{
+    
+    
+  //})
+};
+
+exports.userConstructor = userConstructor;
