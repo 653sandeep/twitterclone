@@ -1,6 +1,10 @@
 var mongoose = require('mongoose')
-  , Schema = mongoose.Schema
+  , Schema = mongoose.Schema 
+
   ,ObjectId = Schema.ObjectId;
+
+  //var tweet = require('./tweet.js');
+  //var tweet =  mongoose.model('user', tweetSchema);  
 
 var userSchema = Schema({
 	tweet       : ObjectId,

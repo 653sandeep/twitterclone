@@ -9,7 +9,7 @@ mongoose.connect('mongodb://localhost/twitter-clone');
  
 var api = require('./api.js');
 app.post('/user/', api.post);
-app.get('/user/:id/', api.show);
+app.get('/user/:tHandle/', api.show);
 app.get('/user/tweets/', api.list);
  
 var server = app.listen(3001, function() {

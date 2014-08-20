@@ -4,9 +4,13 @@ mongoose.connect('mongodb://localhost/userDB');
   var mongoose = require('mongoose')
     , Schema = mongoose.Schema
 
+
+var tweetModel = require('./tweetModel');
+var tweet =  mongoose.model('tweet', tweetSchema); 
 var userSchema = Schema({
     tHandle    	: String,
     password  	: String,
+    tweets		:[{ type: Schema.Types.ObjectId, ref: 'tweet' }],
     //startDate : Date,
     // tweets    : [{ type : String, ref: 'wallSchema'}],
     // following : { type : Number },
@@ -47,3 +51,14 @@ var newUser = new user(
 };
 
 exports.userConstructor = userConstructor;
+
+
+
+// var OrderSchema = new mongoose.Schema({
+//     items: [{type: mongoose.Schema.Types.ObjectId, ref: 'Item'}]
+// });
+
+// var ItemSchema = new mongoose.Schema({
+//     price: Number,
+//     quantity: Number
+// });

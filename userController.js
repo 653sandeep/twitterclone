@@ -23,8 +23,34 @@ var userConstructor = new userConstructor();
     res.end();
     });
   });
+  
+  app.post('/user/', function(req, res){
+  userConstructor.create({
+    tHandle           : req.body.tHandle,
+    password          : req.body.password,
+  }, function(error, docs) {
+  res.redirect('/user/');
+  });
+});
 
-  // app.post('/user/login', function(req,res){
+
+// app.get('/user/tweet/', function(req, res){
+//   userConstructor.findAll(function(error, tweets){
+//     res.write(JSON.stringify(tweets));
+//     res.end();
+//     });
+//   })
+
+//   app.post('/user/tweet/', function(req, res){
+//   userConstructor.createTweet({
+//     tHandle   : req.body.tHandle,
+//     body      : req.body.body,
+//   }, function(error, docs) {
+//   res.redirect('/user/tweet/');
+//   });
+// });
+
+ // app.post('/user/login', function(req,res){
   //   userConstructor.login({
   //     tHandle           : req.body.tHandle,
   //     password          : req.body.password,
@@ -39,13 +65,3 @@ var userConstructor = new userConstructor();
   //     } 
   //   });
   // });
-
-  
-  app.post('/user/', function(req, res){
-  userConstructor.create({
-    tHandle           : req.body.tHandle,
-    password          : req.body.password,
-  }, function(error, docs) {
-  res.redirect('/user/');
-  });
-});
