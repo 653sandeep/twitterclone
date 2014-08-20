@@ -21,9 +21,16 @@ userConstructor.prototype.findAll = function(callback){
         callback( null, Users )
       });  
   };
+// userConstructor.prototype.login = function(params, callback){
+// 	if(params.tHandle == this.tHandle && params.password == this.password){
+// 		callback();
+// 	}
+// 	else{
+// 		console.error(error);
+// 	}
+// }
 
-
-  userConstructor.prototype.New = function(params, callback){
+  userConstructor.prototype.create = function(params, callback){
 var newUser = new user(
   { 
     tHandle 		: params.tHandle,

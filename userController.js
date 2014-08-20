@@ -17,20 +17,35 @@ var userConstructor = new userConstructor();
   });
 
 
-  app.get('/users/', function(req, res){
+  app.get('/user/', function(req, res){
   userConstructor.findAll(function(error, Users){
     res.write(JSON.stringify(Users));
     res.end();
     });
-  })
+  });
 
-  })
+  // app.post('/user/login', function(req,res){
+  //   userConstructor.login({
+  //     tHandle           : req.body.tHandle,
+  //     password          : req.body.password,
+  //   },function(error, loggedin){
+  //   if(error){
+  //     res.status(404);
+  //     res.end();
+  //   }  
+  //   else{
+  //     res.write("Login successful" + loggedin);
+  //     res.end();   
+  //     } 
+  //   });
+  // });
+
   
-  app.post('/users/new/', function(req, res){
-  userConstructor.New({
+  app.post('/user/', function(req, res){
+  userConstructor.create({
     tHandle           : req.body.tHandle,
     password          : req.body.password,
   }, function(error, docs) {
-  res.redirect('/users/');
+  res.redirect('/user/');
   });
 });
