@@ -1,101 +1,91 @@
-
 var mongoose = require('mongoose')
   , Schema = mongoose.Schema
-mongoose.connect('mongodb://localhost/testDB');
-	var mongoose = require('mongoose')
-  	, Schema = mongoose.Schema
+mongoose.connect('mongodb://localhost/testTweetDB');
+  var mongoose = require('mongoose')
+    , Schema = mongoose.Schema
   
-	var postSchema = Schema({
-  		post_id     : Number,
-  		title       : String,
-  		url         : String,
-  		votecount   : Number,
-  		comments 	: [{ type: String, ref: 'commentSchema' }]
-	});
+  var tweetSchema = Schema({
+    tHandle         : String,
+    body            : String,
+    dated           : Date,
+    reTweetCount    : Number,
+    replies         : [{ type: String, ref: 'replySchema' }],
+    favourite       : Boolean
+  }); 
 
-	var commentSchema = Schema({
+  var wallSchema = Schema({
+    tweets          : [{ type : String, ref : 'tweet'}],
+    reply           : [{ type : String, ref : 'tweet'}],
+    reTweetCount    : [{ type : String, ref : 'tweet'}],
+    fav             : []
+  });
 
-  		comment_id  : { type: Number, ref: 'postSchema' },
-  		commentText : { type: String, ref: 'postSchema' },
-  		userid     : { type: Number, ref: 'userSchema' }
-	});
-	var Post  = mongoose.model('Post', postSchema);	
-	PostProvider = function(){};
+  var replySchema = Schema({
+    user_id     : { type: Number, ref: 'userSchema' },
+    reply_id    : { type: Number, ref: 'wallSchema' },
+    replyText   : { type: String, ref: 'wallSchema' },
+  });
 
-	PostProvider.prototype.findAll = function(callback) {
-  			Post.find({}, function (err, posts) {
-    		callback( null, posts )
-  		});  
-	};
+  var userSchema = Schema({
+    userid    : Number,
+    startDate : Date,
+    tweets    : [{ type : String, ref: 'wallSchema'}],
+    following : { type : Number },
+    followers : { type : Number }
+  })
+  var Tweet  = mongoose.model('Tweet', tweetSchema);  
+  var Wall   = mongoose.model('Wall', wallSchema);
+  TweetProvider = function(){};
 
-	PostProvider.prototype.findById = function(id, callback) {
-  		Post.findById(id, function (err, post) {
-    		if (!err) {
-	  		callback(null, post);
-			}
-  		});
-	};
-	
-	PostProvider.prototype.save = function(params, callback) {
-  		var post = new Post(
-  			{ post_id	: params.post_id,
-  			  title		: params.title,
-  			  url		: params.url,
-  			  votecount : params.votecount 
-  			});
-  		post.save(function (err) {
-    	callback();
-  		});
-	};
-
-	PostProvider.prototype.addCommentToPost = function(postId, comment, callback) {
-  	this.findById(postId, function(error, post) {
-    	if(error)
-    	{
-	  		callback(error)
-		}
-    	else 
-    	{
-    		console.log(comment);
-	  		post.comments.push(comment.userid,comment.comment_id,comment.commentText);
-	  		post.save(function (err) {   
-	    	if(!err){
-		  		callback();
-	    	}	
-	  		});
-    	}
-  	});
+TweetProvider.prototype.findAll = function(callback) {
+        Tweet.find({}, function (err, tweets) {
+        callback( null, tweets )
+      });  
   };
 
-PostProvider.prototype.updateById = function(id, body, callback) {
-  Post.findById(id, function (err, post) {
-    if (!err) {
-    post.title     = body.title;
-    post.body      = body.body;
-    post.post_id   = body.post_id,
-    post.url       = body.url,
-    post.votecount = body.votecount, 
-    post.save(function (err) {
-      if(!err){
-      callback();
-      }  
-    });
-  }
-  if(err){
-    callback(err);
-  }
+
+
+TweetProvider.prototype.home = function(){
+
+
+
+}
+
+TweetProvider.prototype.composeNew = function(params, callback){
+var newTweet = new Tweet(
+  { 
+    tHandle : params.tHandle,
+    body    : params.body,
   });
-};
-exports.PostProvider = PostProvider;
+  newTweet.save(function (err) {
+  callback();
+});
+var newWall = new Wall(
+  {
+    
+    
+  })
+}
 
 
+TweetProvider.prototype.notifications = function(){
+    //
 
 
+}
+
+TweetProvider.prototype.discover = function(){
+    // tailored tweets
 
 
+}
 
+TweetProvider.prototype.me = function(){
 
+    //tweets
+    //following
+    //followers
 
+}
 
-
-
+exports.TweetProvider = TweetProvider;
