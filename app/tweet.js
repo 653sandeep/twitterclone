@@ -3,9 +3,11 @@ var mongoose = require('mongoose')
 //mongoose.connect('mongodb://localhost/testTweetDB');
 //var mongoose = require('mongoose')
 //, Schema = mongoose.Schema
+
+var user = require('./user.js').model('user'); 
   
 var tweetSchema = Schema({
-  body            : String,
+  body            : [{ type : String, ref:'user'}],
   // dated           : Date,
   // reTweetCount    : Number,
   // replies         : [{ type: String, ref: 'replySchema' }],

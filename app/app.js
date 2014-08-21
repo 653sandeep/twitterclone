@@ -11,7 +11,7 @@ var api = require('./api.js');
 app.post('/user/', api.create);
 app.get('/user/:tHandle/', api.show);
 app.get('/users/', api.list);
-//app.post('/user/tweet/',api.createTweet);
+app.post('/user/:tHandle/tweet/',api.createTweet);
  
 var server = app.listen(3001, function() {
     console.log('Listening on port %d', server.address().port);

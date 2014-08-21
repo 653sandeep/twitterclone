@@ -16,6 +16,7 @@ exports.create = function(req, res) {
       });
 
     }  
+    var tweetz = require('./tweet.js').model('tweet'); 
  
 exports.list = function(req, res) {
   user.find({},function(err, users) {
@@ -32,3 +33,46 @@ exports.show = (function(req, res) {
         });
     })
 });
+
+exports.createTweet = function(req,res){
+  user.find({ tHandle: req.params.tHandle }).populate('tweetz').exec(function(error, users){
+    var newTweet = new tweet({body : req.body.body});
+    newTweet.save(function(err){
+      if(!err){
+        if(JSON.stringify(newTweet.body).length<=140){
+          res.write("Accepted" + newTweet);
+          res.end();  
+        }
+      }
+      else{
+        res.status(413);
+        res.write("Tweet exceeds 140 chars");
+        res.end(); 
+      } 
+    });          
+    users[0].tweets.push(newTweet);
+    users[0].save(function (err) {
+        if (err) { 
+          res.status(422);
+          res.write("Rejected" + users[0]);
+          res.end();          
+        } 
+      });
+    //console.log(users[0]);
+    //console.log("-----3------");
+    //console.log(users);
+  });
+}
+  // saver.save(function (err) {
+  //       if (err) { 
+  //         res.status(422);
+  //         res.write("Rejected" + saver);
+  //         res.end();          
+  //       }
+  //       else{
+  //           res.write("Saved" + saver);
+  //           res.end();  
+  //         }
+  //     });
+  //this.user.tweets.push(newTweet);
+ //});   
