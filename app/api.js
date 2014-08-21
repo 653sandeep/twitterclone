@@ -1,16 +1,19 @@
 var user = require('./user.js');
 var tweet = require('./tweet.js');
  
-exports.post = function(req, res) {
+exports.create = function(req, res) {
     var saved = new user({tHandle: req.body.tHandle, password: req.body.password});
-    saved.save();
+    
+    saved.save(function (err) {
+      if (err) return handleError(err);
+      });
     res.write("Accepted" + saved);
     res.end();
 }
  
 exports.list = function(req, res) {
-  user.find(function(err, users) {
-    res.write(users);
+  user.find({},function(err, users) {
+    res.write(JSON.stringify(users));
     res.end();
   });
 }

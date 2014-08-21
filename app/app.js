@@ -8,9 +8,10 @@ mongoose.connect('mongodb://localhost/twitter-clone');
   app.use(bodyParser.json());
  
 var api = require('./api.js');
-app.post('/user/', api.post);
+app.post('/user/', api.create);
 app.get('/user/:tHandle/', api.show);
-app.get('/user/tweets/', api.list);
+app.get('/users/', api.list);
+//app.post('/user/tweet/',api.createTweet);
  
 var server = app.listen(3001, function() {
     console.log('Listening on port %d', server.address().port);
