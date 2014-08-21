@@ -3,13 +3,12 @@ var tweet = require('./tweet.js');
  
 exports.create = function(req, res) {
     var saved = new user({tHandle: req.body.tHandle, password: req.body.password});
-    
-    saved.save(function (err) {
-      if (err) return handleError(err);
-      });
-    res.write("Accepted" + saved);
-    res.end();
-}
+      saved.save(function (err) {
+        if (err) return handleError(err);
+        });
+      res.write("Accepted" + saved);
+      res.end();
+    }  
  
 exports.list = function(req, res) {
   user.find({},function(err, users) {
