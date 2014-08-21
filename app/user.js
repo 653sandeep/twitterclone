@@ -16,6 +16,18 @@ var userSchema = Schema({
     // following : { type : Number },
     // followers : { type : Number }
 });
-//var user =  mongoose.model('user', userSchema);  
+var user =  mongoose.model('user', userSchema);  
+
+//user.schema.path('tHandle').required(true, ' tHandle is a required field ');
+//user.schema.path('password').required(true, ' password is a required field ');
+
+user.schema.path('tHandle').validate(function(value){  
+  return /[A-Za-z0-9_]/.test(value);
+},'Invalid paramaters!');
+
+user.schema.path('password').validate(function(value){
+  return /[A-Za-z0-9_]/.test(value);
+},'Invalid paramaters!');
 
 module.exports = mongoose.model('user', userSchema);
+

@@ -13,12 +13,4 @@ var tweetSchema = Schema({
 }); 
 
 //var tweet =  mongoose.model('tweet', tweetSchema); 
-
-// var Toy = mongoose.model('Toy', toySchema);
-
-// Toy.schema.path('color').validate(function (value) {
-//   return /blue|green|white|red|orange|periwinkle/i.test(value);
-// }, 'Invalid color');
-
- 
 module.exports = mongoose.model('tweet', tweetSchema);
