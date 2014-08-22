@@ -3,7 +3,7 @@ var mongoose = require('mongoose')
 
 var user = require('./user.js');
 var tweetSchema = Schema({
-  tweetBody            : [{ type : String, ref:'user'}],
+  tweetBody            : { type : String, ref:'user'},
   // dated           : Date,
   // reTweetCount    : Number,
   // replies         : [{ type: String, ref: 'replySchema' }],

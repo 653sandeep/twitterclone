@@ -2,40 +2,67 @@ var user = require('./user.js');
 var tweet = require('./tweet.js');
  
 exports.create = function(req, res) {
-    var saved = new user({tHandle: req.body.tHandle, password: req.body.password});
-      saved.save(function (err) {
-        if (err) { 
-          res.status(422);
-          res.write("Rejected" + saved);
-          res.end();          
-        }
-        else{
-          res.write("Accepted" + saved);
-          res.end();          
-        }
-      });
+  var saved = new user({tHandle: req.body.tHandle, password: req.body.password});
+  saved.save(function (err) {
+    if (err) { 
+      res.status(422);
+      res.write("Rejected" + saved);
+      res.end();          
+    }
+    else{
+      res.write("Accepted" + saved);
+      res.end();          
+    }
+  });
+}
 
-    }  
-    var tweetz = require('./tweet.js').model('tweet'); 
+var tweetz = require('./tweet.js').model('tweet'); 
  
 exports.list = function(req, res) {
   user.find({},function(err, users) {
-    res.write(JSON.stringify(users));
-    res.end();
+    if(err){
+      res.status(404);
+      res.write("No users found!");
+      res.end();
+    }
+    else{
+      res.write(JSON.stringify(users));
+      res.end();
+    }
   });
 }
  
 exports.show = function(req, res) {
-    user.find({ tHandle: req.params.tHandle }, function(error, user) {
-        var tweets = tweet.find({tweet: tweet._id}, function(error, tweets) {
-          res.write(JSON.stringify([{user: user, tweets: tweets}]));
+  var tempArray=[];
+  user.find({ tHandle: req.params.tHandle }).populate('tweets').exec(function(error, users){
+    if(error){
+      res.status(404);
+      res.write("No users found!");
+      res.end();
+    }
+    else{
+      for(var i=0;i<users[0].tweets.length;i++){
+        tempArray.push(users[0].tweets[i]._id);
+      }  
+      tweet.find({_id: { $in: tempArray} },function(err, found){
+        if(err){
+          res.status(404);
+          res.write("No tweets found!");
           res.end();
-        });
-    })
-};
+        }
+        else{
+          res.write(JSON.stringify(found));
+          res.end();
+        }
+      });
+    }
+  });
+}   
+    
+  
 
 exports.createTweet = function(req,res){
-  user.find({ tHandle: req.params.tHandle }).populate('tweetz').exec(function(error, users){
+  user.find({ tHandle: req.params.tHandle }).populate('tweets').exec(function(error, users){
     var newTweet = new tweet({tweetBody : req.body.tweetBody});
     newTweet.save(function(err){
       if(!err){
@@ -56,21 +83,27 @@ exports.createTweet = function(req,res){
       }  
     });          
     users[0].tweets.push(newTweet);
-    // users[0].save(function (err) {
-    //     if (err) { 
-    //       res.status(422);
-    //       res.write("Rejected" + users[0]);
-    //       res.end();          
-    //     } 
-    //   });
-    //console.log(users[0]);
-    //console.log("-----3------");
-    //console.log(users);
+    users[0].save(function (err) {
+        if (err) { 
+          res.status(422);
+          res.write("Rejected" + users[0]);
+          res.end();          
+        } 
+      });
+    console.log(users[0]);
+    console.log("-----3------");
+    console.log(users);
   });
 }
 
 
-exports.showTweets = function(req,res){
+exports.addToFollowing = function(req,res){
+  user.find({ tHandle: req.params.tHandle1 }, function(error, user) {
+    if(error){
+      res.status(404);
+      res.write("User" + req.params.tHandle1 + "not found!" );
+      res.end();
+    }
 
 
 
@@ -78,6 +111,7 @@ exports.showTweets = function(req,res){
 
 
 
+});
 }
   // saver.save(function (err) {
   //       if (err) { 
@@ -92,3 +126,38 @@ exports.showTweets = function(req,res){
   //     });
   //this.user.tweets.push(newTweet);
  //});   
+
+
+
+// user.find({ tHandle: req.params.tHandle }, function(error, user) {
+//     if(error){
+//       res.status(404);
+//       res.write(" User: " + req.params.tHandle + " not found!");
+//       res.end();
+//     }
+//     else{
+//       console.log(user[0].tweets[0]);
+//       console.log("--------------");
+//       console.log(user[0].tweets[1]);
+//       console.log(user[0].tweets.length);
+//       for(i=0;i<user[0].tweets.length;i++){
+//         tweet.find({_id: user[0].tweets[i]}, function(error, tweets) {
+//           if(error){
+//             res.status(404);
+//             res.write("No tweets found!");
+//             res.end();
+//           }
+//           else{
+//             console.log(typeof tweets);
+//             console.log(tweets[0].tweetBody);
+//             var temp1 = JSON.stringify(user);
+//             var temp2 = JSON.stringify(tweets);
+
+//             res.write("User:" + temp1 + "\n" + "Tweets:" + temp2);
+//             res.end();
+//           }
+//         });
+//       } 
+//     }  
+//   })
+// };

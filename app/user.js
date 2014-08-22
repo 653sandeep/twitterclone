@@ -10,11 +10,11 @@ var userSchema = Schema({
 	tweet       : ObjectId,
   tHandle    	: String,
   password  	: String,
-  tweets		  : [{ type: Schema.Types.ObjectId, ref: 'tweet' }],  //[String]            
-    //startDate : Date,
-    // tweets    : [{ type : String, ref: 'wallSchema'}],
-    // following : { type : Number },
-    // followers : { type : Number }
+  tweets		  : [{type: Schema.Types.ObjectId, ref: 'tweet' }],            
+//startDate   : Date,
+//tweets      : [{ type : String, ref: 'wallSchema'}],
+  following   : [{ type: Schema.Types.ObjectId, ref: 'user' }],
+//followers   : [{ type: Schema.Types.ObjectId, ref: 'user' }], 
 });
 var user =  mongoose.model('user', userSchema);  
 
