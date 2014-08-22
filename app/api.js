@@ -98,20 +98,40 @@ exports.createTweet = function(req,res){
 
 
 exports.addToFollowing = function(req,res){
-  user.find({ tHandle: req.params.tHandle1 }, function(error, user) {
-    if(error){
+  user.find({ tHandle: req.params.tHandle1 }, function(error1, user1) {
+    if(error1){
       res.status(404);
       res.write("User" + req.params.tHandle1 + "not found!" );
       res.end();
     }
-
-
-
-
-
-
-
-});
+    else{
+      res.write("Found:" + user1);
+      user.find({ tHandle: req.params.tHandle2 }, function(error2, user2) {
+        if(error2){
+          res.status(404);
+          res.write("User" + req.params.tHandle1 + "not found!" );
+          res.end();
+        }
+        else{
+          console.log("222");
+          res.write("Found:" + user2);
+          user1[0].following.push(user2[0]._id);
+          console.log(user1[0].following);
+          user1[0].save(function (err) {
+            if (err) { 
+              res.status(500);
+              res.write("Rejected" + user1);
+              res.end();          
+            }
+            else{
+              res.write("Accepted" + user1);
+              res.end();          
+            }
+          });
+        }
+      });
+    }
+  });
 }
   // saver.save(function (err) {
   //       if (err) { 

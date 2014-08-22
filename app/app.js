@@ -13,7 +13,7 @@ app.get('/user/:tHandle/', api.show);
 app.get('/users/', api.list);
 app.post('/user/:tHandle/tweet/',api.createTweet);
 //app.get('/user/:tHandle/tweet/',api.showTweets);
-//app.post('/user/:tHandle1/following/:tHandle2',api.addToFollowing);
+app.post('/user/:tHandle1/following/:tHandle2',api.addToFollowing);
  
 var server = app.listen(3001, function() {
     console.log('Listening on port %d', server.address().port);
