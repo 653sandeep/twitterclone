@@ -8,13 +8,13 @@ var mongoose = require('mongoose')
 
 var userSchema = Schema({
 	tweet       : ObjectId,
-  tHandle    	: String,
+  tHandle    	: {type: String, unique: true },
   password  	: String,
   tweets		  : [{type: Schema.Types.ObjectId, ref: 'tweet' }],            
 //startDate   : Date,
-//tweets      : [{ type : String, ref: 'wallSchema'}],
+//retweets    : [{ type : Schema.Types.ObjectId, ref: 'tweet'}],
   following   : [{ type: Schema.Types.ObjectId, ref: 'user' }],
-//followers   : [{ type: Schema.Types.ObjectId, ref: 'user' }], 
+  followers   : [{ type: Schema.Types.ObjectId, ref: 'user' }], 
 });
 var user =  mongoose.model('user', userSchema);  
 

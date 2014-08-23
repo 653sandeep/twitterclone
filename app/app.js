@@ -8,12 +8,13 @@ mongoose.connect('mongodb://localhost/twitter-clone');
   app.use(bodyParser.json());
  
 var api = require('./api.js');
-app.post('/user/', api.create);
-app.get('/user/:tHandle/', api.show);
+app.post('/users/', api.create);
+app.get('/users/:tHandle/', api.show);
 app.get('/users/', api.list);
-app.post('/user/:tHandle/tweet/',api.createTweet);
+app.post('/users/:tHandle/tweets/',api.createTweet);
+app.post('/users/:tHandle1/following/:tHandle2/',api.addToFollowing);
+app.get('/users/:tHandle1/followers/',api.showFollowers);
 //app.get('/user/:tHandle/tweet/',api.showTweets);
-app.post('/user/:tHandle1/following/:tHandle2',api.addToFollowing);
  
 var server = app.listen(3001, function() {
     console.log('Listening on port %d', server.address().port);
