@@ -14,7 +14,7 @@ app.get('/users/', api.list);
 app.post('/users/:tHandle/tweet/',api.createTweet);
 app.post('/users/:tHandle1/following/:tHandle2/',api.addToFollowing);
 app.get('/users/:tHandle1/followers/',api.showFollowers);
-//app.get('/users/:tHandle/tweets/',api.showTweets);
+app.post('/users/:tHandle1/retweet/:tHandle2/:tweetId',api.doRetweet);
  
 var server = app.listen(3001, function() {
     console.log('Listening on port %d', server.address().port);
