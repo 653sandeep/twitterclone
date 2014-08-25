@@ -11,10 +11,10 @@ var api = require('./api.js');
 app.post('/users/', api.create);
 app.get('/users/:tHandle/', api.show);
 app.get('/users/', api.list);
-app.post('/users/:tHandle/tweets/',api.createTweet);
+app.post('/users/:tHandle/tweet/',api.createTweet);
 app.post('/users/:tHandle1/following/:tHandle2/',api.addToFollowing);
 app.get('/users/:tHandle1/followers/',api.showFollowers);
-//app.get('/user/:tHandle/tweet/',api.showTweets);
+//app.get('/users/:tHandle/tweets/',api.showTweets);
  
 var server = app.listen(3001, function() {
     console.log('Listening on port %d', server.address().port);

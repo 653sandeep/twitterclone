@@ -64,6 +64,7 @@ exports.show = function(req, res) {
         }
         else{
           res.write(JSON.stringify(picker(found,arrOfKeys)));
+          res.write(JSON.stringify(found));
           res.end();
         }
       });
@@ -79,7 +80,7 @@ exports.createTweet = function(req,res){
     newTweet.save(function(err){
       if(!err){
         if(JSON.stringify(newTweet.tweetBody).length<=140){
-          res.write("Accepted" + JSON.stringify(picker(newTweet,arrOfKeys)));
+          res.write("Accepted" + JSON.stringify(picker(users[0],arrOfKeys)));
           res.end();  
         }
         else{
@@ -90,7 +91,7 @@ exports.createTweet = function(req,res){
       } 
       else{
         res.status(422);
-        res.write("Rejected" + JSON.stringify(picker(newTweet,arrOfKeys)));
+        res.write("Rejected" + JSON.stringify(picker(users[0],arrOfKeys)));
         res.end(); 
       }  
     });          
@@ -127,11 +128,21 @@ exports.addToFollowing = function(req,res){
         else{
           console.log("added to following:");
           res.write("Found:" + JSON.stringify(picker(user2[0],arrOfKeys)));
-          console.log(user2[0]._id);
-          console.log(user1[0].following);
-          console.log(_.contains(user1[0].following,user2[0]._id));
+          // console.log(user2[0]._id);
+          // console.log(typeof user2[0]._id);
+          // console.log(typeof user2[0].id);
+          // console.log(user1[0].following);
+          // console.log(typeof user1[0].following);
 
-          // if(_.contains(user1[0].following, user2[0]._id.toString())){
+          // console.log(_.contains(user1[0].following,user2[0].id));
+          // var temp = user1[0].following;
+          // var strArr = _.values(temp);
+          // console.log(typeof strArr);
+          // console.log(strArr);
+
+          //console.log(_(user1[0].following).value());
+
+          // if(_.contains(user1[0].following, user2[0].id)){
           //   res.write("\n Cannot follow same user twice!");
           //   res.end();
           //   return;
@@ -144,6 +155,16 @@ exports.addToFollowing = function(req,res){
           user2[0].followers.push(user1[0]._id);
 
           console.log("User2: " + user2[0].tHandle + "is being followed by :" + user2[0].followers);
+
+          console.log(user2[0]);
+
+          console.log(user2[0].tweets);
+
+          console.log(_(user2[0].tweets).value());
+          user1[0].tweets = user1[0].tweets.concat(user2[0].tweets);
+          console.log(user1[0].tweets);
+          //user1[0].tweets.push(user2[0].tweets._id);
+          //user1[0].tweets.push(user2[0].retweet._id);
 
           //console.log(user2[0].followers);
           user1[0].save(function (err) {
@@ -185,10 +206,28 @@ exports.showFollowers = function(req,res){
       res.end();
     }
     else{
-      res.write("Found:" + JSON.stringify(picker(user1[0],arrOfKeys)));
-      res.write("Followers are :" + user1[0].followers);
+      res.write("Found the user." );
+      res.write("\n Followers are :" + JSON.stringify(user1[0].followers));
       res.end();
       console.log("Followers are :" + user1[0].followers);
+
+    }
+  });
+}
+
+
+exports.showTweets = function(req,res){
+  user.find({ tHandle: req.params.tHandle }, function(error1, user1) {
+    if(error1){
+      res.status(404);
+      res.write("User" + req.params.tHandle + "not found!" );
+      res.end();
+    }
+    else{
+      res.write("Found the user." );
+      res.write("\n Tweets are :" + JSON.stringify(user1[0].tweets));
+      res.end();
+      console.log("Tweets are :" + user1[0].tweets);
 
     }
   });
