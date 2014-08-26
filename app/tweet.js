@@ -6,7 +6,7 @@ var tweetSchema = Schema({
   tweetBody            : [{ type : String, ref:'user'}],
   creator_id           : { type : Schema.Types.ObjectId, ref: 'user'},
   // dated           : Date,
-  // reTweetCount    : Number,
+  reTweetCount         : { type: Number, default : 0 },
   // replies         : [{ type: String, ref: 'replySchema' }],
   // favourite       : Boolean
 }); 

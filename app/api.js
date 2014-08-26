@@ -296,10 +296,14 @@ exports.doRetweet = function(req,res){
           res.end();
         }
         else{
+          foundTweet.reTweetCount++;
           console.log("111111");
           //console.log(users);
           console.log(users1[0].followers); //array of _id's
-          console.log(foundTweet);          
+          console.log(foundTweet); 
+          console.log(typeof foundTweet);
+          console.log("\n ::");
+          console.log(foundTweet[0]._id);         
           for(var i=0;i<users1[0].followers.length;i++){
             tempArray1.push(users1[0].followers[i]);
           }  
@@ -316,6 +320,28 @@ exports.doRetweet = function(req,res){
               //console.log("\n Followers:" + followers);
               //console.log("\n Followers tweets: " + followers.tweets);
               console.log(typeof followers);
+              //console.log(followers);
+              console.log(followers[0].tweets);
+              console.log(followers[1].tweets);
+              for(var i=0;i<users1[0].followers.length;i++){
+                followers[i].tweets.push(foundTweet[0]._id);
+              }
+              console.log("\n Next:");
+              console.log(followers[0].tweets);
+              console.log(followers[1].tweets);
+              console.log(followers[0]);
+              console.log(followers[1]); 
+              followers.save(function (err) {
+                if (err) { 
+                  res.status(500);
+                  res.write("\n Rejected" + JSON.stringify(picker(followers[0],arrOfKeys)));
+                  res.end();          
+                }
+                else{
+                  res.write("\n Accepted" + JSON.stringify(picker(followers[0],arrOfKeys)));
+                  res.end();          
+                } 
+              }); 
             }
           });
         }
